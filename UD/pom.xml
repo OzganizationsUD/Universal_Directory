@@ -11,25 +11,100 @@
   <url>http://maven.apache.org</url>
 
  <properties>
+ 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.directory>librari</project.build.directory>
     <jdkVersion>1.6</jdkVersion>
     <exeFileName>TestExe</exeFileName>
     <mainClass>com.ud.main.MainApp</mainClass>
+    <postgresqlVersion>9.1-901.jdbc4</postgresqlVersion>
+    
+    <org.springframework.version>3.0.5.RELEASE</org.springframework.version>
+    
+    <!-- DB Properties-->
+    <database.host>localhost</database.host>
+	<database.port>5432</database.port>
+	<database.username>postgres</database.username>
+	<database.password>1</database.password>
+	<database.name>ud_test</database.name>
+	<database.show.sql>false</database.show.sql>
   </properties>
 
   <dependencies>
+  
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+  
+	<dependency>
+		<groupId>postgresql</groupId>
+		<artifactId>postgresql</artifactId>
+		<version>${postgresqlVersion}</version>
+	</dependency>
+	
+<dependency>
+  <groupId>org.springframework</groupId>
+  <artifactId>spring-core</artifactId>
+  <version>${org.springframework.version}</version>
+</dependency>
+
+<dependency>
+  <groupId>org.springframework</groupId>
+  <artifactId>spring-beans</artifactId>
+  <version>${org.springframework.version}</version>
+</dependency>
+
+<dependency>
+  <groupId>org.springframework</groupId>
+  <artifactId>spring-context</artifactId>
+  <version>${org.springframework.version}</version>
+</dependency>
+
+<dependency>
+  <groupId>org.springframework</groupId>
+  <artifactId>spring-context-support</artifactId>
+  <version>${org.springframework.version}</version>
+</dependency>
+
+<dependency>
+  <groupId>org.springframework</groupId>
+  <artifactId>spring-jdbc</artifactId>
+  <version>${org.springframework.version}</version>
+</dependency>
+
+<dependency>
+  <groupId>org.springframework</groupId>
+  <artifactId>spring-test</artifactId>
+  <version>${org.springframework.version}</version>
+  <scope>test</scope>
+</dependency>
+	  
   </dependencies>
   
   <build>
+  		<resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
   	<plugins>
-  		<plugin>
+  	
+		<plugin>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>sql-maven-plugin</artifactId>
+			<configuration>
+				<driver>org.postgresql.Driver</driver>
+				<url>jdbc:postgresql://${database.host}:${database.port}/postgres</url>
+				<username>${database.username}</username>
+				<password>${database.password}</password>
+			</configuration>
+		</plugin>
+		
+		<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-dependency-plugin</artifactId>
 			<configuration>
