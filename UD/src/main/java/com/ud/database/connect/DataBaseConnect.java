@@ -14,6 +14,14 @@ public class DataBaseConnect {
 	private Connection con = null;
 	private Statement stmt = null;
    
+	public DataSource getDs() {
+		return ds;
+	}
+
+	public void setDs(DataSource ds) {
+		this.ds = ds;
+	}
+
 	public Connection getCon() {
 		return con;
 	}
