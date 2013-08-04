@@ -20,4 +20,5 @@
 	</bean>
 
 	<bean id="genericDao" class="com.ud.database.connect.DataBaseConnect" init-method="init" />
+	<bean id="baseService" class="com.ud.database.services.BaseService" init-method="createPlatform" />
 </beans>
