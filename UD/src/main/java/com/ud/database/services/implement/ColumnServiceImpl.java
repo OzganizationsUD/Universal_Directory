@@ -1,9 +1,11 @@
 package com.ud.database.services.implement;
 
 import org.apache.ddlutils.model.Column;
+import org.springframework.stereotype.Service;
 
 import com.ud.database.services.ColumnService;
 
+@Service
 public class ColumnServiceImpl implements ColumnService {
 	
 	public Column createColumn(String name, int type){

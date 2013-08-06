@@ -39,6 +39,7 @@ public class DataBaseConnect {
 	}
 
 	public void init() throws SQLException {
+		
 		con = ds.getConnection();
 		if (con != null)
 			System.out.println("Driver load!!!");
