@@ -7,13 +7,14 @@ import org.apache.commons.beanutils.DynaBean;
 import org.apache.ddlutils.DatabaseOperationException;
 import org.apache.ddlutils.model.Column;
 import org.apache.ddlutils.model.Table;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface TableService {
 	
 	public List<String> getAllTableName();
 	
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public Table createTable(String tableName, List<Column> columns)throws DatabaseOperationException, SQLException;
 	
 	public Table findTableByName(String name);

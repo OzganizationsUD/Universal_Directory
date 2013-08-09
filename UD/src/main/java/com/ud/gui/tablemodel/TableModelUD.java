@@ -38,10 +38,12 @@ public class TableModelUD implements TableModel {
 	}
 
 	public int getRowCount() {
-		return list.size();
+		return list==null ? 0: list.size();
 	}
 
 	public Object getValueAt(int arg0, int arg1) {
+		if ((list==null)||(list.isEmpty()))
+			return null;
 		DynaBean dynaBean = list.get(arg0);
 		return dynaBean.get(table.getColumn(arg1).getName());
 	}

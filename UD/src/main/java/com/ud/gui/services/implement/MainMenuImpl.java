@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ud.database.services.TableService;
+import com.ud.gui.services.CreatorPanelService;
 import com.ud.gui.services.GUIServices;
 import com.ud.gui.services.ListService;
 import com.ud.gui.services.MainMenu;
@@ -26,6 +27,9 @@ public class MainMenuImpl implements MainMenu {
 	
 	@Autowired
 	private TableService tableService;
+	
+	@Autowired
+	private CreatorPanelService creatorPanelService;
 	
 	public MainMenuImpl(){
 		
@@ -57,7 +61,7 @@ public class MainMenuImpl implements MainMenu {
 	private ActionListener onClickItemCreate(){
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				guiServices.setLabelText("YES!!!!!!!!!!!!");
+				creatorPanelService.createCrereatorPane();
 			}
 		};
 	}

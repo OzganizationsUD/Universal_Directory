@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ud.database.services.TableService;
+import com.ud.gui.enums.NamePane;
+import com.ud.gui.services.DataPanelService;
 import com.ud.gui.services.GUIServices;
 import com.ud.gui.services.JTableService;
 import com.ud.gui.services.ListService;
@@ -27,6 +29,9 @@ public class ListServiceImpl implements ListService {
 	
 	@Autowired
 	private JTableService jTableService;
+	
+	@Autowired
+	private DataPanelService dataTablePaneService;
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public  JList createListComponent() {
@@ -48,9 +53,14 @@ public class ListServiceImpl implements ListService {
 			public void mouseClicked(MouseEvent evt){
 				JList jlist = (JList)evt.getSource();
 		        if (evt.getClickCount() == 2) {
+		        	NamePane namePane = NamePane.valueOf(guiServices.getSplitPane().getRightComponent().getName());
+		            
+		        	if (namePane != NamePane.DEMONSTRATOR)
+		            	guiServices.getSplitPane().setRightComponent(dataTablePaneService.createDataTablePanel());
+		            
 		            Table table = tableService.findTableByName((String)jlist.getSelectedValue());
 		            List<DynaBean> list = tableService.getAllTableRecord(table.getName());
-		            guiServices.setjTable(jTableService.createTable(table, list).getModel());
+		            dataTablePaneService.getjTable().setModel(jTableService.createTable(table, list).getModel());
 		            guiServices.getTableHeader().setText(guiServices.getTableCaption()+" \""+table.getName()+"\"");
 		        }
 			}

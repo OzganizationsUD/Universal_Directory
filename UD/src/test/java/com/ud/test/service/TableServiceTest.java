@@ -19,7 +19,7 @@ import com.ud.database.services.ColumnService;
 import com.ud.database.services.TableService;
 import com.ud.test.PersistenceTest;
 
-public class TableServiceTest {
+public class TableServiceTest  {
 	
 	@Autowired
 	private TableService tableService;

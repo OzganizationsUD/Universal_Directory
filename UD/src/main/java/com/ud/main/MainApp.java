@@ -9,8 +9,11 @@ import java.util.Scanner;
 import javax.swing.SwingUtilities;
 
 import org.apache.commons.beanutils.DynaBean;
+import org.apache.ddlutils.DatabaseOperationException;
 import org.apache.ddlutils.model.Column;
 import org.apache.ddlutils.model.Table;
+import org.postgresql.util.PSQLException;
+import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -39,11 +42,15 @@ public class MainApp
 	public static void main(String[] args ) throws SQLException
     {
 		
-        ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/application-context.xml");
-       	MainApp mainApp = context.getBean(MainApp.class);
-       	mainApp.start();
-        
-       cin.nextBigInteger();
+		try{
+	        ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/application-context.xml");
+	        MainApp mainApp = context.getBean(MainApp.class);
+	       	mainApp.start();
+	        
+	       	cin.nextBigInteger();
+		}catch (BeanCreationException e){
+			System.out.println("Not Data Base!!!");
+		}        
     }
 
 	private void start() throws SQLException{

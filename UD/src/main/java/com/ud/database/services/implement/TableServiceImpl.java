@@ -12,6 +12,7 @@ import org.apache.ddlutils.model.Database;
 import org.apache.ddlutils.model.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ud.database.services.BaseService;
 import com.ud.database.services.TableService;
@@ -32,6 +33,7 @@ public class TableServiceImpl implements TableService {
 		return tableName;
 	}
 
+	@Transactional
 	public Table createTable(String tableName, List<Column> columns) throws DatabaseOperationException, SQLException {
 		Table table = new Table();
 		table.setName(tableName);
