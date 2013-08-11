@@ -9,6 +9,6 @@ import org.apache.ddlutils.model.Table;
 
 public interface JTableService {
 	
-	public JTable createTable(Table table, List<DynaBean> list);
+	public JTable createTable(String tableName);
 
 }

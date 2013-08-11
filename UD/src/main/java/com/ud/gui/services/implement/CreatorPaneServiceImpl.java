@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,18 +89,20 @@ public class CreatorPaneServiceImpl implements CreatorPanelService {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				List<Column> columns = new ArrayList<Column>();
+				String tableName = jTextField.getText()==null ? null:jTextField.getText().trim();
 				for (int i = 0;i<tableCtreator.getRowCount();i++){
-					Object name = tableCtreator.getValueAt(i, 0);
-					if (name=="")
+					String name = tableCtreator.getValueAt(i, 0)==null ? "":tableCtreator.getValueAt(i, 0).toString().trim();
+					if ((name=="")||(tableCtreator.getValueAt(i, 1)==null))
 						break;
 					String type = tableCtreator.getValueAt(i, 1).toString();
 					TypesForCreator typesForCreator = TypesForCreator.valueOfDesc(type);
-					Column column = columnService.createColumn(name.toString(), typesForCreator.getTypeSql());
+					Column column = columnService.createColumn(name, typesForCreator.getTypeSql());
 					columns.add(column);
 				}
-				String tableName = jTextField.getText();
 				try {
 					if ((tableName!=null)&&(tableName!="")&&(!columns.isEmpty())){
+						Column id = columnService.createColumn("id_"+tableName, Types.BIGINT, true, true);
+						columns.add(0, id);
 						tableService.createTable(tableName,columns);	
 						listService.setListData(tableService.getAllTableName().toArray());
 					}

@@ -62,7 +62,7 @@ public class TableServiceTest  {
 	@Ignore
 	@Test
 	public void testgetAllTableRecord(){
-		List<DynaBean> list = tableService.getAllTableRecord("new_table");
+		List<DynaBean> list = tableService.getSelectAll("new_table");
 		assertNotNull(list);		
 		assertEquals(10L, list.size());
 	}

@@ -2,12 +2,9 @@ package com.ud.gui.services.implement;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
 
 import javax.swing.JList;
 
-import org.apache.commons.beanutils.DynaBean;
-import org.apache.ddlutils.model.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,10 +55,10 @@ public class ListServiceImpl implements ListService {
 		        	if (namePane != NamePane.DEMONSTRATOR)
 		            	guiServices.getSplitPane().setRightComponent(dataTablePaneService.createDataTablePanel());
 		            
-		            Table table = tableService.findTableByName((String)jlist.getSelectedValue());
-		            List<DynaBean> list = tableService.getAllTableRecord(table.getName());
-		            dataTablePaneService.getjTable().setModel(jTableService.createTable(table, list).getModel());
-		            guiServices.getTableHeader().setText(guiServices.getTableCaption()+" \""+table.getName()+"\"");
+		            String tableName = (String)jlist.getSelectedValue();
+		            dataTablePaneService.getjTable().setModel(jTableService.createTable(tableName).getModel());
+		            dataTablePaneService.getjTable().setName(tableName);
+		            guiServices.getTableHeader().setText(guiServices.getTableCaption()+" \""+tableName+"\"");
 		        }
 			}
 		};

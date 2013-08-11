@@ -19,5 +19,8 @@ public interface TableService {
 	
 	public Table findTableByName(String name);
 	
-	public List<DynaBean> getAllTableRecord(String name);
+	public List<DynaBean> getSelectAll(String tableName);
+	
+	@Transactional
+	public void insert(String tableName, Object[][] data);
 }
