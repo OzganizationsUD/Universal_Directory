@@ -68,9 +68,9 @@ public class TableServiceImpl implements TableService {
 		Table table = findTableByName(tableName);
 		DynaBean dynaBean = baseService.getDatabase().createDynaBeanFor(table);
 		for (int i = 0; i < data.length; i++) {
-			for (int j = 1; j < data[i].length; j++){
-				System.out.println(table.getColumn(j).getTypeCode());
-				dynaBean.set(table.getColumn(j).getName(), convertType(data[i][j], table.getColumn(j).getTypeCode()));
+			for (int j = 0; j < data[i].length; j++){
+				System.out.println(table.getColumn(j+1).getTypeCode());
+				dynaBean.set(table.getColumn(j+1).getName(), convertType(data[i][j], table.getColumn(j+1).getTypeCode()));
 			}
 			baseService.getPlatform().insert(baseService.getDatabase(), dynaBean);
 		}	

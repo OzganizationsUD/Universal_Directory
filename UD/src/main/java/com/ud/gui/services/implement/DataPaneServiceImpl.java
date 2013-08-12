@@ -80,7 +80,7 @@ public class DataPaneServiceImpl implements DataPanelService {
 					return;
 				Object[][] data = new Object[countNewRecord][jTable.getColumnCount()]; 
 				for (int i = 0; i < countNewRecord; i++) 
-					for (int j = 1; j < jTable.getColumnCount(); j++) {
+					for (int j = 0; j < jTable.getColumnCount(); j++) {
 						data[i][j] = jTable.getValueAt(i+rowCount, j);
 					}
 				tableService.insert(jTable.getName(), data);

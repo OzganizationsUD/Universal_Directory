@@ -25,20 +25,20 @@ public class JTableServiceImpl implements JTableService {
 		Table table = tableService.findTableByName(tableName);
 		List<DynaBean> list = tableService.getSelectAll(tableName);
 		
-		String[] columnNames = new String[table.getColumnCount()];
-		for (int i = 0; i < columnNames.length; i++)
-			columnNames[i] = table.getColumn(i).getName();
+		String[] columnNames = new String[table.getColumnCount()-1];
+		for (int i = 1; i < table.getColumnCount(); i++)
+			columnNames[i-1] = table.getColumn(i).getName();
 		Object[][] data = null;
 		if (list != null){
-			data = new Object[list.size()][table.getColumnCount()];
+			data = new Object[list.size()][table.getColumnCount()-1];
 			for (int i = 0; i < data.length; i++)
-				for (int j = 0; j < data[i].length; j++) {
+				for (int j = 1; j < table.getColumnCount(); j++) {
 					Object object=list.get(i).get(table.getColumn(j).getName());
 					if (table.getColumn(j).getTypeCode()==93){
 						Timestamp date = (Timestamp) object;
 						object = new SimpleDateFormat("dd.mm.yyyy").format(date);	
 					}
-					data[i][j] = object;
+					data[i][j-1] = object;
 				}
 		}
 		
