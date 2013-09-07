@@ -27,6 +27,8 @@ public class DataPaneServiceImpl implements DataPanelService {
 	
 	private JButton buttonSave;
 	
+	private JScrollPane jScrollPane;
+	
 	private int rowCount=-1;
 	
 	@Autowired
@@ -40,7 +42,9 @@ public class DataPaneServiceImpl implements DataPanelService {
 		jPanel.setName(NamePane.DEMONSTRATOR.toString());
 		
 		jTable = new JTable();
-		jPanel.add(new JScrollPane(jTable), BorderLayout.CENTER);
+		jScrollPane = new JScrollPane(jTable);
+		jScrollPane.setName(NamePane.SCROLL_DEMONSTRATOR.toString());
+		jPanel.add(jScrollPane, BorderLayout.CENTER);
 		
 		JPanel panelPageStart = new JPanel(new BorderLayout());
 		
@@ -84,7 +88,7 @@ public class DataPaneServiceImpl implements DataPanelService {
 						data[i][j] = jTable.getValueAt(i+rowCount, j);
 					}
 				tableService.insert(jTable.getName(), data);
-				jTable.setModel(jTableService.createTable(jTable.getName()).getModel());
+				setjTable(jTableService.createTable(jTable.getName()));
 				buttonSave.setVisible(false);
 			}
 		};
@@ -92,5 +96,16 @@ public class DataPaneServiceImpl implements DataPanelService {
 	
 	public JTable getjTable() {
 		return jTable;
+	}
+
+	public void setjTable(JTable jTable) {
+		this.jTable = jTable;
+        jPanel.remove(jScrollPane);
+        jScrollPane = new JScrollPane(jTable);
+		jPanel.add(jScrollPane, BorderLayout.CENTER);
+	}
+
+	public JPanel getjPanel() {
+		return jPanel;
 	}
 }

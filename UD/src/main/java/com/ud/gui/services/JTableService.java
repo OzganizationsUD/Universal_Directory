@@ -10,5 +10,7 @@ import org.apache.ddlutils.model.Table;
 public interface JTableService {
 	
 	public JTable createTable(String tableName);
+	
+	public JTable getjTable();
 
 }

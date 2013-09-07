@@ -9,10 +9,8 @@ import java.util.Scanner;
 import javax.swing.SwingUtilities;
 
 import org.apache.commons.beanutils.DynaBean;
-import org.apache.ddlutils.DatabaseOperationException;
 import org.apache.ddlutils.model.Column;
 import org.apache.ddlutils.model.Table;
-import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -60,10 +58,9 @@ public class MainApp
 		ColumnService columnService = new ColumnServiceImpl();
 
 		List<Column> list = new ArrayList<Column>();
-		list.add(columnService.createColumn("id", Types.BIGINT, true, true));
 		list.add(columnService.createColumn("name", Types.VARCHAR));
 
-		Table table = tableService.createTable("new_table", list);
+		Table table = tableService.createTable("new_table", list,null);
 
 		DynaBean dynaBean = baseService.getDatabase().createDynaBeanFor(table);
 		for (int i = 0; i < 10; i++) {
@@ -72,12 +69,11 @@ public class MainApp
 		}
 		
 		List<Column> columns = new ArrayList<Column>();
-		columns.add(columnService.createColumn("id", Types.BIGINT, true, true));
 		columns.add(columnService.createColumn("login", Types.VARCHAR));
 		columns.add(columnService.createColumn("pass", Types.VARCHAR));
 		columns.add(columnService.createColumn("email", Types.VARCHAR));
 		
-		Table table1 = tableService.createTable("user_ud", columns);
+		Table table1 = tableService.createTable("user_ud", columns,null);
 		dynaBean = baseService.getDatabase().createDynaBeanFor(table1);
 		for (int i = 0; i < 60; i++) {
 			dynaBean.set(table1.getColumn(1).getName(), "login"+i+10);

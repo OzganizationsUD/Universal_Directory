@@ -3,8 +3,9 @@ package com.ud.gui.services.implement;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,7 @@ import com.ud.database.services.TableService;
 import com.ud.gui.enums.NamePane;
 import com.ud.gui.enums.TypesForCreator;
 import com.ud.gui.services.CreatorPanelService;
+import com.ud.gui.services.CreatorSubFrameService;
 import com.ud.gui.services.GUIServices;
 import com.ud.gui.services.ListService;
 
@@ -51,6 +53,9 @@ public class CreatorPaneServiceImpl implements CreatorPanelService {
 	@Autowired
 	private ListService listService;
 	
+	@Autowired
+	private CreatorSubFrameService creatorSubFrameService;
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public JPanel createCrereatorPane() {
 		jPanel =  new JPanel(new BorderLayout());
@@ -62,7 +67,11 @@ public class CreatorPaneServiceImpl implements CreatorPanelService {
 			data[i][1] = null;
 		}
 		tableCtreator = new JTable(data,getColumnName());
-		tableCtreator.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(new JComboBox(getItemsComboBoxType())));
+		
+		JComboBox comboBoxType = new JComboBox(getItemsComboBoxType());
+		comboBoxType.addItemListener(onChangeTypeComboBox());
+		
+		tableCtreator.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(comboBoxType));
 		JScrollPane jScrollPane = new JScrollPane(tableCtreator);
 		
 		JPanel panelHeader = new JPanel(new BorderLayout());
@@ -101,15 +110,28 @@ public class CreatorPaneServiceImpl implements CreatorPanelService {
 				}
 				try {
 					if ((tableName!=null)&&(tableName!="")&&(!columns.isEmpty())){
-						Column id = columnService.createColumn("id_"+tableName, Types.BIGINT, true, true);
-						columns.add(0, id);
-						tableService.createTable(tableName,columns);	
+						
+						tableService.createTable(tableName,columns,creatorSubFrameService.getForeignKeys());	
 						listService.setListData(tableService.getAllTableName().toArray());
 					}
 				} catch (DatabaseOperationException e1) {
 					e1.printStackTrace();
 				} catch (SQLException e1) {
 					e1.printStackTrace();
+				}
+			}
+		};
+	}
+	
+	private ItemListener onChangeTypeComboBox(){
+		return new ItemListener() {
+			
+			@SuppressWarnings("rawtypes")
+			public void itemStateChanged(ItemEvent e) {
+				JComboBox box = (JComboBox)e.getSource();
+				String item = (String)box.getSelectedItem();
+				if (TypesForCreator.valueOfDesc(item)==TypesForCreator.DIRECTORY){
+					creatorSubFrameService.createFrame();					
 				}
 			}
 		};

@@ -2,5 +2,6 @@ package com.ud.gui.enums;
 
 public enum NamePane {
 	CREATOR,
-	DEMONSTRATOR;
+	DEMONSTRATOR,
+	SCROLL_DEMONSTRATOR;
 }

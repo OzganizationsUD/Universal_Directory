@@ -6,7 +6,8 @@ public enum TypesForCreator {
 
 	DOUBLE(Types.DOUBLE, "Числовой"),
 	STRING(Types.VARCHAR, "Текстовый"),
-	DATE(Types.TIMESTAMP, "Дата");
+	DATE(Types.TIMESTAMP, "Дата"),
+	DIRECTORY(Types.BIGINT, "Cправочник");
 	
 	public final int typeSql;
 	public final String description;

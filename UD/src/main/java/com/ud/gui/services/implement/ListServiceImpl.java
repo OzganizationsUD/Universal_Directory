@@ -4,6 +4,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JList;
+import javax.swing.JTable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,8 +57,9 @@ public class ListServiceImpl implements ListService {
 		            	guiServices.getSplitPane().setRightComponent(dataTablePaneService.createDataTablePanel());
 		            
 		            String tableName = (String)jlist.getSelectedValue();
-		            dataTablePaneService.getjTable().setModel(jTableService.createTable(tableName).getModel());
-		            dataTablePaneService.getjTable().setName(tableName);
+		            JTable jTable = jTableService.createTable(tableName);
+		            jTable.setName(tableName);
+		            dataTablePaneService.setjTable(jTable);
 		            guiServices.getTableHeader().setText(guiServices.getTableCaption()+" \""+tableName+"\"");
 		        }
 			}

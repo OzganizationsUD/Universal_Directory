@@ -1,6 +1,7 @@
 package com.ud.database.services.implement;
 
 import java.sql.SQLException;
+import java.sql.Types;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,11 +14,13 @@ import org.apache.ddlutils.DatabaseOperationException;
 import org.apache.ddlutils.io.converters.TimestampConverter;
 import org.apache.ddlutils.model.Column;
 import org.apache.ddlutils.model.Database;
+import org.apache.ddlutils.model.ForeignKey;
 import org.apache.ddlutils.model.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ud.database.services.BaseService;
+import com.ud.database.services.ColumnService;
 import com.ud.database.services.TableService;
 
 @Service
@@ -25,6 +28,9 @@ public class TableServiceImpl implements TableService {
 	
 	@Autowired
 	private BaseService baseService;
+	
+	@Autowired
+	private ColumnService columnService;
 	
 	public List<String> getAllTableName() {
 		Table[] tables = baseService.getDatabase().getTables();
@@ -36,15 +42,28 @@ public class TableServiceImpl implements TableService {
 		return tableName;
 	}
 
-	public Table createTable(String tableName, List<Column> columns) throws DatabaseOperationException, SQLException {
+	public Table createTable(String tableName, List<Column> columns, List<ForeignKey> foreignKeys) throws DatabaseOperationException, SQLException {
 		Table table = new Table();
 		table.setName(tableName);
+		
+		Column id = columnService.createColumn("id_"+tableName, Types.BIGINT, true, true);
+		columns.add(0, id);
+		
 		table.addColumns(columns);
-		Database database = new Database();
+		
+		if (foreignKeys!=null)
+			table.addForeignKeys(foreignKeys);
+		
+		Database database = baseService.getDatabase();
 		database.addTable(table);
-		baseService.getPlatform().createTables(database,false, true);
-		baseService.createPlatform();
+		baseService.getPlatform().alterTables(database, true);
 		return table;
+	}
+	
+	public void deleteTable(String nameTable) {
+		Table table = findTableByName(nameTable);	
+		baseService.getPlatform().dropTable(baseService.getDatabase(), table, false);
+		baseService.getDatabase().removeTable(table);
 	}
 
 	public Table findTableByName(String name) {
@@ -79,12 +98,13 @@ public class TableServiceImpl implements TableService {
 	private Object convertType(Object data, int type){
 		Object res = null;
 		switch (type) {
-		case 8:
+		case 8: //Double
 			res = new Double(data.toString());
 			break;
-		case 93:
-			
-				
+		case -5://Long
+			res = new Long((String)data);
+			break;
+		case 93://Date				
 			try {
 				Date date = new SimpleDateFormat("dd.mm.yyyy").parse(data.toString());
 				data = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss").format(date);
