@@ -94,4 +94,16 @@ public class TableServiceTest extends PersistenceTestJUnit  {
 		tableService.deleteTable(tableName2);
 		tableService.deleteTable(tableName1);
 	}
+	
+	@Test
+	public void testFindById() {
+		
+		String tableName = "new_table";
+		Table table = tableService.findTableByName(tableName);
+		
+		DynaBean db = tableService.findById(tableName, 4L);
+		assertNotNull(db);
+		assertEquals(4L, db.get(table.getColumn(0).getName()));
+		assertEquals("name3", db.get(table.getColumn(1).getName()));
+	}
 }

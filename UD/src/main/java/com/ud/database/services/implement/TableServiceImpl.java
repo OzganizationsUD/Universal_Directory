@@ -19,9 +19,12 @@ import org.apache.ddlutils.model.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.truemesh.squiggle.SelectQuery;
+import com.truemesh.squiggle.criteria.MatchCriteria;
 import com.ud.database.services.BaseService;
 import com.ud.database.services.ColumnService;
 import com.ud.database.services.TableService;
+
 
 @Service
 public class TableServiceImpl implements TableService {
@@ -81,6 +84,21 @@ public class TableServiceImpl implements TableService {
 			list.add(dynaBean);
 		}
 		return list.isEmpty() ? null : list;
+	}
+	
+	public DynaBean findById(String tableName, Long id) {//TODO types convert. write Query!
+		com.truemesh.squiggle.Table tableSql = new com.truemesh.squiggle.Table(tableName);
+		SelectQuery select = new SelectQuery();
+		Table tableDB = findTableByName(tableName);
+		select.addToSelection(tableSql.getWildcard());
+		select.addCriteria(new MatchCriteria(tableSql, tableDB.getPrimaryKeyColumns()[0].getName(),
+				MatchCriteria.EQUALS, id ));
+		System.out.println(select.toString());
+		Iterator iterator = baseService.getPlatform().query(baseService.getDatabase(), select.toString());
+		while (iterator.hasNext()) {
+			return (DynaBean) iterator.next();
+		}
+		return null;
 	}
 
 	public void insert(String tableName, Object[][] data) {

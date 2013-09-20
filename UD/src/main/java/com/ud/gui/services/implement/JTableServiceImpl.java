@@ -23,12 +23,13 @@ import com.ud.gui.services.JTableService;
 public class JTableServiceImpl implements JTableService {
 
 	private JTable jTable;
+	private Long[] ids;
 	
 	@Autowired 
 	private TableService tableService;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public JTable createTable(String tableName) {
+	public JTable createTable(String tableName) { 
 		Table table = tableService.findTableByName(tableName);
 		ForeignKey[] foreignKeys = table.getForeignKeys();
 		
@@ -40,21 +41,25 @@ public class JTableServiceImpl implements JTableService {
 		Object[][] data = null;
 		if (list != null){
 			data = new Object[list.size()][table.getColumnCount()-1];
-			for (int i = 0; i < data.length; i++)
+			ids = new Long[list.size()];
+			for (int i = 0; i < data.length; i++) {
+				ids[i] = (Long) list.get(i).get(table.getColumn(0).getName());
 				for (int j = 1; j < table.getColumnCount(); j++) {
 					
 					Column column = table.getColumn(j);
-					Object object=list.get(i).get(column.getName());
+					Object object = list.get(i).get(column.getName());
 					ForeignKey foreignKey = findLocalKey(foreignKeys, column);
 					
-					if (foreignKey!=null){
+					if (foreignKey != null){
 						object = null;
 					}else if (column.getTypeCode()==93){
 						Timestamp date = (Timestamp) object;
 						object = new SimpleDateFormat("dd.mm.yyyy").format(date);	
 					}
 					data[i][j-1] = object;
+					
 				}
+			}
 		}
 				
 		DefaultTableModel model = new DefaultTableModel(data, columnNames);
@@ -63,7 +68,7 @@ public class JTableServiceImpl implements JTableService {
 			ForeignKey foreignKey = findLocalKey(foreignKeys, table.getColumn(i));
 			if ((foreignKey!=null)&&(list!=null)){
 				JComboBox comboBox = new JComboBox(getItemsComboBoxSubRecord(foreignKey.getForeignTable()));
-				jTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(comboBox));
+				jTable.getColumnModel().getColumn(i+1).setCellEditor(new DefaultCellEditor(comboBox));
 			}
 		}
 		return jTable;
@@ -105,4 +110,14 @@ public class JTableServiceImpl implements JTableService {
 	public JTable getjTable() {
 		return jTable;
 	}
+	
+	public Long[] getIds() {
+		return ids;
+	}
+	
+	public int getIndex() {
+		return jTable.getSelectedRow();
+	}
+	
+	
 }

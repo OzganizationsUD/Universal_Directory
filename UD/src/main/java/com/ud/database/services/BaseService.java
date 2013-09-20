@@ -39,7 +39,7 @@ public class BaseService {
 			dslContext = (DSL.using(dataSource.getConnection(), SQLDialect.POSTGRES));
 			System.out.println("Create new platform and Data base!!!");
 		}else
-			System.err.println("ERROR: Not inizialize dataSourse!!! Or not connect data base!!!");
+			System.err.println("Not inizialize dataSourse!!! Or not connect data base!!!");
 		
 	}
 

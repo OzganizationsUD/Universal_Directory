@@ -12,4 +12,5 @@ public interface DataPanelService {
 	public void setjTable(JTable jTable);
 	
 	public JPanel getjPanel();
+	
 }

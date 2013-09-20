@@ -23,6 +23,8 @@ public interface TableService {
 	
 	public List<DynaBean> getSelectAll(String tableName);
 	
+	public DynaBean findById(String tableName, Long id);
+	
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void insert(String tableName, Object[][] data);
 }

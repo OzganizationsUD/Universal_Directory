@@ -108,4 +108,5 @@ public class DataPaneServiceImpl implements DataPanelService {
 	public JPanel getjPanel() {
 		return jPanel;
 	}
+	
 }

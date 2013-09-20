@@ -1,5 +1,7 @@
 package com.ud.database.services.implement;
 
+import java.sql.Types;
+
 import org.apache.ddlutils.model.Column;
 import org.apache.ddlutils.model.ForeignKey;
 import org.apache.ddlutils.model.Reference;

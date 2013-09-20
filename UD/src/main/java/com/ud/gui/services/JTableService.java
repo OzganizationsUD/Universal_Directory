@@ -12,5 +12,9 @@ public interface JTableService {
 	public JTable createTable(String tableName);
 	
 	public JTable getjTable();
+	
+	public Long[] getIds();
+	
+	public int getIndex();
 
 }
